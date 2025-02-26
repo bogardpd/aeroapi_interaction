@@ -32,6 +32,18 @@ class AeroAPIWrapper:
         print(f"🌐 Requesting {response.url}")
         return response.json()
     
+    def get_flight_track(self, id, include_estimated_positions=True):
+        """Get the track for a specific flight."""
+        headers = {'x-apikey': self.api_key}
+        params = {
+            'include_estimated_positions': include_estimated_positions,
+        }
+        url = f"{self.server}/flights/{id}/track"
+        self.wait()
+        response = requests.get(url, headers=headers, params=params)
+        print(f"🌐 Requesting {response.url}")
+        return response.json()
+    
     def format_time(self, time):
         """Format time as ISO 8601."""
         if time is None:
@@ -40,5 +52,5 @@ class AeroAPIWrapper:
     
     def wait(self):
         if self.wait_time > 0:
-            print(f"⏳ Waiting {self.wait_time} seconds...")
+            print(f"⏳ Waiting {self.wait_time} seconds")
             time.sleep(self.wait_time)
