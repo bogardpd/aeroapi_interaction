@@ -2,16 +2,16 @@
 import argparse
 from dateutil.parser import isoparse
 
-def airport_tracks(
+def download_airport_tracks(
     airport, gpkg, start=None, min_time=None, max_time=None):
     """Get tracks for a particular airport.
     
     Args:
-        airport (str): The airport code.
-        start (datetime): The start time.
+        airport (str): An airport ICAO code.
+        gpkg (str): The GeoPackage filename to save tracks to.
+        start (datetime): The starting time for flight results.
         min_time (datetime): The time all flights must land after.
         max_time (datetime): The time all flights must depart before.
-        gpkg (str): The GeoPackage filename.
     """
     print(f"Getting tracks for {airport}.")
 
@@ -44,7 +44,7 @@ if __name__ == "__main__":
         default=None,
     )
     args = argparser.parse_args()
-    airport_tracks(
+    download_airport_tracks(
         args.airport,
         args.gpkg,
         parse_time(args.start),
