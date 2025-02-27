@@ -2,6 +2,8 @@
 import os
 import requests
 import time
+from datetime import datetime, timedelta
+from zoneinfo import ZoneInfo
 from dotenv import load_dotenv
 
 class AeroAPIWrapper:
@@ -20,6 +22,16 @@ class AeroAPIWrapper:
     def get_airport_flights(
         self, id, start=None, end=None, cursor=None):
         """Get flights for a specific airport."""
+        # AeroAPI only allows 10 days of history on this call.
+        ten_days_ago = datetime.now(tz=ZoneInfo("UTC")) - timedelta(days=10)
+        if start is not None:
+            if start < ten_days_ago:
+                start = ten_days_ago
+                print(
+                    "Start time is more than 10 days ago."
+                    "Setting to 10 days ago."
+                )
+            start = start.replace(microsecond=0).astimezone(ZoneInfo("UTC"))
         headers = {'x-apikey': self.api_key}
         params = {
             'start': self.format_time(start),
