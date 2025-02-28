@@ -45,7 +45,22 @@ def download_airport_tracks(
         else:
             break
     df = pd.DataFrame(flights)
+    prev_count = len(df)
+
+    # Filter out flights outside of the date range.
+    if min_time is not None:
+        df = df[df['arr_time'] >= min_time]
+    if max_time is not None:
+        df = df[df['dep_time'] <= max_time]
+    print(f"Filtered {prev_count - len(df)} flights outside the date range.")
+
+    # Filter out existing flights.
+    prev_count = len(df)
+    df = df[~df['fa_flight_id'].isin(existing_ids)]
+    print(f"Filtered {prev_count - len(df)} existing flights.")
+
     print(df)
+    
         
 def build_record(response, type):
     """Build a record from the response."""
