@@ -2,9 +2,11 @@
 import argparse
 import pandas as pd
 import geopandas as gpd
+import json
 from aeroapi_wrapper import AeroAPIWrapper
 from dateutil.parser import isoparse
 from pathlib import Path
+from shapely.geometry import Point, LineString
 from urllib.parse import urlparse, parse_qs
 
 LAYER = "flight_tracks"
@@ -59,8 +61,11 @@ def download_airport_tracks(
     df = df[~df['fa_flight_id'].isin(existing_ids)]
     print(f"Filtered {prev_count - len(df)} existing flights.")
 
-    print(df)
-    
+    flight_tuples = df.itertuples()
+    for index, row in enumerate(flight_tuples):
+        print(f"Processing flight {index + 1}/{len(flights)}")
+        create_record(row, aeroapi, gpkg_path)
+
         
 def build_record(response, type):
     """Build a record from the response."""
@@ -75,6 +80,29 @@ def build_record(response, type):
         }
         for t in response[type]
     ]
+
+def create_record(gdf_row, aeroapi, gpkg_path):
+    """Creates a row in the GeoPackage from a flight DataFrame row"""
+    response = aeroapi.get_flight_track(gdf_row.fa_flight_id)
+    if len(response['positions']) < 2:
+        print(f"Skipping {gdf_row.fa_flight_id}. Not enough positions.")
+        return None
+    linestring = LineString([
+        Point(p['longitude'], p['latitude'], p['altitude'])
+        for p in response['positions']]
+    )
+    record = {
+        'geometry': linestring,
+        'fa_flight_id': gdf_row.fa_flight_id,
+        'orig': gdf_row.origin,
+        'dest': gdf_row.destination,
+        'dep_time': gdf_row.dep_time,
+        'arr_time': gdf_row.arr_time,
+        'fa_json': json.dumps(gdf_row.fa_json),
+    }
+    gdf = gpd.GeoDataFrame([record], geometry='geometry', crs="EPSG:4326")
+    gdf.to_file(gpkg_path, layer=LAYER, driver='GPKG', mode='a')
+    print(f"📦 Wrote {gdf_row.fa_flight_id} to GeoPackage")
 
 def get_codes(record):
     """Get origin and destination airport codes."""
