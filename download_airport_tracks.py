@@ -66,7 +66,7 @@ def download_airport_tracks(
         print(f"Processing flight {index + 1}/{len(flights)}")
         create_record(row, aeroapi, gpkg_path)
 
-        
+
 def build_record(response, type):
     """Build a record from the response."""
     return [
@@ -80,6 +80,7 @@ def build_record(response, type):
         }
         for t in response[type]
     ]
+
 
 def create_record(gdf_row, aeroapi, gpkg_path):
     """Creates a row in the GeoPackage from a flight DataFrame row"""
@@ -104,6 +105,7 @@ def create_record(gdf_row, aeroapi, gpkg_path):
     gdf.to_file(gpkg_path, layer=LAYER, driver='GPKG', mode='a')
     print(f"📦 Wrote {gdf_row.fa_flight_id} to GeoPackage")
 
+
 def get_codes(record):
     """Get origin and destination airport codes."""
     if record['origin'] is None:
@@ -117,6 +119,7 @@ def get_codes(record):
         destination = record['destination']['code']
 
     return (origin, destination)
+
 
 def get_times(record):
     """Get departure and arrival times."""
@@ -149,6 +152,7 @@ def get_times(record):
         arr = None
 
     return (dep, arr)
+
 
 def parse_time(time):
     """Parse a time string in ISO 8601 format, but allow None."""
