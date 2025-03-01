@@ -13,7 +13,7 @@ These utilities require an API key for [AeroAPI](https://www.flightaware.com/com
 
 ## Scripts
 
-### download_airport_tracks
+### download_airport_tracks.py
 
 This script downloads track information for flights arriving or departing from a specified airport.
 
