@@ -30,13 +30,13 @@ This script downloads track information for flights arriving or departing from a
 
 `gpkg`: The path for a GeoPackage file to save the results to. If the file does not exist, it will be created with the results saved in a layer named `flight_tracks`. If the file already exists, new tracks will be appended to the `flight_tracks` layer.
 
-`--start`: (Optional) The starting time for flight results, in ISO 8601 format (e.g., `2025-02-01T00:00:00Z)` This can be used to avoid searching for flights which are already in the GeoPackage file, by setting its value to the date/time of the previous run of the script.
+`--start`: (Optional) The starting time for flight results, in ISO 8601 format (e.g. `2025-02-01T00:00:00Z`) This can be used to avoid searching for flights which are already in the GeoPackage file, by setting its value to the date/time of the previous run of the script.
 
-`--min_time`: (Optional) The time all flights must land on or after after in ISO 8601 format (e.g., `2025-02-15T00:00:00Z)`. Any flights landing before this time will not have a track requested from AeroAPI and will not be added to the GeoPackage file.
+`--min_time`: (Optional) The time all flights must land on or after after in ISO 8601 format (e.g. `2025-02-15T00:00:00Z`). Any flights landing before this time will not have a track requested from AeroAPI and will not be added to the GeoPackage file.
 
-`--max_time`: (Optional) The time all flights must depart on or before in ISO 8601 format (e.g., `2025-02-28T23:59:59Z`). Any flights departing after this time will not have a track requested from AeroAPI and will not be added to the GeoPackage file.
+`--max_time`: (Optional) The time all flights must depart on or before in ISO 8601 format (e.g. `2025-02-28T23:59:59Z`). Any flights departing after this time will not have a track requested from AeroAPI and will not be added to the GeoPackage file.
 
 #### Example
-This will download track information for flights arriving or departing from John F. Kennedy International Airport between February 1 and 28, 2025, and save the results into **kjfk_tracks.gpkg**. The script will start searching for flights occuring after 15 February 2025.
+This will download track information for flights arriving or departing from John F. Kennedy International Airport between February 1 and 28, 2025, and save the results into **kjfk_tracks.gpkg**. The script will start searching for flights occurring after 15 February 2025.
 
 `python download_airport_tracks.py KJFK kjfk_tracks.gpkg --start 2025-02-15T00:00:00Z --min_time 2025-02-15T00:00:00Z --max_time 2025-02-28T23:59:59Z`
