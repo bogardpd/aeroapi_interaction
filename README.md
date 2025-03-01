@@ -22,7 +22,7 @@ This script downloads track information for flights arriving or departing from a
 
 #### Usage
 
-`python download_airport_tracks.py <airport_code> <gpkg> --start <start_time> --end <end_time>`
+`python download_airport_tracks.py <airport_code> <gpkg> [--start <start>] [--min_time <min_time>] [--max_time <max time>]`
 
 #### Arguments
 
