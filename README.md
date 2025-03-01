@@ -39,4 +39,4 @@ This script downloads track information for flights arriving or departing from a
 #### Example
 This will download track information for flights arriving or departing from John F. Kennedy International Airport between February 1 and 28, 2025, and save the results into **kjfk_tracks.gpkg**. The script will start searching for flights occurring after 15 February 2025.
 
-`python download_airport_tracks.py KJFK kjfk_tracks.gpkg --start 2025-02-15T00:00:00Z --min_time 2025-02-15T00:00:00Z --max_time 2025-02-28T23:59:59Z`
+`python download_airport_tracks.py KJFK kjfk_tracks.gpkg --start 2025-02-15T00:00:00Z --min_time 2025-02-01T00:00:00Z --max_time 2025-02-28T23:59:59Z`
