@@ -56,7 +56,7 @@ def download_fh_recent_flights(gpkg: Path):
             flight_json = select_flight_from_ident(aw, flight['fa_flight_id'])
             if flight_json is None:
                 continue
-            download_flight(aw, gpkg, flight['id'], flight_json)
+            download_flight(aw, gpkg, flight['fh_id'], flight_json)
 
 def download_flight(aw: AeroAPIWrapper, gpkg: Path, fh_id: int, fa_json: str):
     """Download a FlightAware flight and save to GeoPackage."""
